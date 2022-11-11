@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>	
+	<style>
+		input[type="button"]{
+			min-width:60px;
+			min-height:30px;
+			margin:5px;
+		}
+		#result, #calc_view {
+			padding: 7px;
+			width: 100%;
+			box-sizing: border-box;
+			margin: 5px 0;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Calculator</h1>
+	
+	<table id="arr1">  
+	</table>
+    <script>
+	
+		var calcArray = [
+				[1,2,3,4,5],
+				[6,7,8,9,0],
+				["+","-","/","*","="]
+			];
+
+		function createArray(idName){
+			var arr_rows = 3;
+			var arr_cols = 5;
+			var matrix1 = '';
+			var count = 1;
+			matrix1 += '<tr id="input_result"><th colspan="2" > Status </th> <th colspan="3" > <input id="calc_view" value="0" placeholder="calculation result is dispalyed here" disabled="disabled" /> </th><tr>';
+			matrix1 += '<tr id="input_result"><th colspan="2" > Answer</th> <th colspan="3" > <input id="result" value="0" placeholder="calculation result is dispalyed here" disabled="disabled" /> </th><tr>';
+			var num1 = 1;
+			for(i=0; i < arr_rows; i++){
+				
+				matrix1 += '<tr>';
+				for(j=0; j < arr_cols; j++){
+					matrix1 += '<td> <input type="button" value="' + calcArray[i][j] + '" class="' + idName + '" onclick="calc(this.value)" /></td>';
+					count++;
+				}
+				matrix1 += '</tr>';
+			}
+			document.getElementById(idName).innerHTML = matrix1;
+		}
+		
+		createArray('arr1');
+		
+		
+		var resulttext = " ";
+		var valx = '';
+		var calcnum = 0;
+		var operator = "+";
+		let valview = '';
+		
+		function calc(valn){
+		
+			let valx1 = '';
+			valx += isNaN( Number(valn) )? '' : valn;
+			resulttext = resulttext + valn;
+			
+			document.getElementById("result").value = valx + " " ;
+			
+			if( valn == "+" || valn == "-" || valn == "/" || valn == "*" || valn == "="){
+				
+				switch(operator){
+					case "+":
+						valx1 = isNaN( Number(valx) ) ? 0 : valx;
+						calcnum = calcnum + Number(valx1);
+						break;
+					case "-":
+						valx1 = isNaN( Number(valx) ) ? 0 : valx;
+						calcnum = calcnum - Number(valx1);
+						break;
+					case "*":
+						valx1 = isNaN( Number(valx) ) ? 1 : valx;
+						calcnum = calcnum * Number(valx1);
+					break;
+					case "/":
+						valx1 = isNaN( Number(valx) ) ? 1 : valx;
+						calcnum = calcnum / Number(valx1);
+						break;
+					case "=":
+						//
+						break;
+				}
+				
+				resulttext = ( valn == "=" ) ? calcnum : resulttext;
+				 resulttext = ( valn != operator && valn != "=" ) ? calcnum + valn : resulttext;
+				
+				valx = '';
+				operator = valn;
+
+				
+			}
+			document.getElementById("result").value = calcnum;
+			document.getElementById("calc_view").value = resulttext;
+		}
+
+    </script>
+
+</body>
+
+</html>
